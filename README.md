@@ -7,7 +7,7 @@ Get the source code:
 Clone the repository:
 git clone https://github.com/romeopuiu/birds-sighting-service.git
 
-Prerequisites:
+<b>Prerequisites:</b>
 * Spring Boot 2.7.0
 * Java 11
 * Maven
@@ -45,6 +45,10 @@ generate-ddl: true
 
 
 <h5>Using Docker compose to run Spring Boot birds-sighting-service:</h5>
+Before using docker compose have to modify file docker-compose
+at line :  SPRING_DATASOURCE_PASSWORD: YOUR_DATABASE_PASSWORD
+
+
   docker compose up
 <h5>Stop the Spring Boot birds-sighting-service application:</h5>
   docker compose down
