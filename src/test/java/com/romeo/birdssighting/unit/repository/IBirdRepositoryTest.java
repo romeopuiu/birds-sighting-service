@@ -1,0 +1,54 @@
+package com.romeo.birdssighting.unit.repository;
+
+
+import com.romeo.birdssighting.domain.Bird;
+import com.romeo.birdssighting.repository.IBirdRepository;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+@RunWith(MockitoJUnitRunner.class)
+public class IBirdRepositoryTest {
+
+    @Mock
+    private IBirdRepository birdRepository;
+
+    /**
+     * This method is used for testing to find a bird by name
+     */
+    @Test
+    public void testFindByName() {
+        var name = "Test";
+        var bird = new Bird();
+        bird.setName(name);
+
+        when(birdRepository.findByName(name)).thenReturn(bird);
+
+        var result = birdRepository.findByName(name);
+
+        assertEquals(name, result.getName());
+        verify(birdRepository).findByName(name);
+    }
+
+    /**
+     * This method is used for testing to find a bird by color
+     */
+    @Test
+    public void testFindByColor() {
+        var color = "Red";
+        var bird = new Bird();
+        bird.setColor(color);
+        // Mock behavior
+        when(birdRepository.findByColor(color)).thenReturn(bird);
+
+        var result = birdRepository.findByColor(color);
+        // Verify behavior
+        assertEquals(color, result.getColor());
+        verify(birdRepository).findByColor(color);
+    }
+}
