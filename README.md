@@ -48,8 +48,10 @@ generate-ddl: true
 Before using docker compose have to modify file docker-compose
 at line :  SPRING_DATASOURCE_PASSWORD: YOUR_DATABASE_PASSWORD
 
+ And then run the command :
 
   docker compose up
+
 <h5>Stop the Spring Boot birds-sighting-service application:</h5>
   docker compose down
 
