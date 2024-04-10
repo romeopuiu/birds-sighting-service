@@ -73,3 +73,7 @@ After starting the application open Postman:
 ![bird-by-name](https://github.com/romeopuiu/birds-sighting-service/assets/49139565/7f9127d5-912a-45ec-92c4-f13f4d4a4267)
 
 
+![update-bird](https://github.com/romeopuiu/birds-sighting-service/assets/49139565/af4c6dfd-c677-4b1e-ab09-db0f0b64516d)
+
+
+
