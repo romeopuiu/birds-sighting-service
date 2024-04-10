@@ -59,7 +59,7 @@ public class SightingController {
     /**
      * This method is used for update a sighting
      */
-    @PutMapping("/sightings/{id}")
+    @PutMapping("/sighting/{id}")
     public ResponseEntity<SightingDTO> updateSighting(@PathVariable("id") Long id,
                                                       @RequestBody SightingDTO sightingDTO) {
         log.info("REST request to update a sightingDTO: {}", sightingDTO);

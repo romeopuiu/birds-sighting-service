@@ -72,8 +72,10 @@ public class SightingService {
         sighting.setLocation(sightingDTO.getLocation());
         sighting.setDateTime(sightingDTO.getDateTime());
         iSightingRepository.save(sighting);
-
-        return sightingMapper.convertToDto(sighting);
+        sightingDTO = sightingMapper.convertToDto(sighting);
+        var birdDTO = birdMapper.convertToDto(sighting.getBird());
+        sightingDTO.setBird(birdDTO);
+        return sightingDTO;
     }
 
     /**
