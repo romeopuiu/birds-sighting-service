@@ -94,3 +94,8 @@ After starting the application open Postman:
 
 
 
+![delete-sighting](https://github.com/romeopuiu/birds-sighting-service/assets/49139565/2e799ff9-dd4d-40b3-928e-5674ecc31d54)
+
+
+
+
