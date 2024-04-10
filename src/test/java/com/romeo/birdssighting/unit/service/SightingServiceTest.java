@@ -2,8 +2,10 @@ package com.romeo.birdssighting.unit.service;
 
 import com.romeo.birdssighting.domain.Bird;
 import com.romeo.birdssighting.domain.Sighting;
+import com.romeo.birdssighting.dto.BirdDTO;
 import com.romeo.birdssighting.dto.SightingDTO;
 import com.romeo.birdssighting.exception.ResourceNotFoundException;
+import com.romeo.birdssighting.mapper.BirdMapper;
 import com.romeo.birdssighting.mapper.SightingMapper;
 import com.romeo.birdssighting.repository.IBirdRepository;
 import com.romeo.birdssighting.repository.ISightingRepository;
@@ -24,6 +26,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
@@ -44,6 +47,9 @@ public class SightingServiceTest {
     @Mock
     private IBirdRepository iBirdRepository;
 
+    @Mock
+    private BirdMapper birdMapper;
+
     @InjectMocks
     private SightingService sightingService;
 
@@ -57,7 +63,7 @@ public class SightingServiceTest {
 
         var sightingDTO = new SightingDTO();
         sightingDTO.setId(1L);
-        Sighting sighting = new Sighting();
+        var sighting = new Sighting();
         sighting.setId(1L);
         sighting.setLocation("London");
         bird.setId(birdId);
@@ -216,30 +222,45 @@ public class SightingServiceTest {
     }
 
     /**
-     * This method is used for testing for save sighting when a bird exist
+     * This method is used for testing for save sighting
      */
     @Test
-    public void testCreateSighting_WhenBirdExists() {
-        var birdId = 1L;
-        var sightingDTO = new SightingDTO();
-        sightingDTO.setId(1L);
-        sightingDTO.setLocation("Test");
-
+    public void testCreateSighting() {
+        // Mock data
+        Long birdId = 1L;
         var bird = new Bird();
         bird.setId(birdId);
-        when(iBirdRepository.findById(birdId)).thenReturn(java.util.Optional.of(bird));
+        bird.setName("Test name");
 
-        var sighting = new Sighting();
+        var sightingDTO = new SightingDTO();
+        sightingDTO.setLocation("Test location");
+
+        Sighting sighting = new Sighting();
+        sighting.setId(1L);
+        sighting.setLocation("Test location");
+        sighting.setBird(bird);
+
+        // Mock repository calls
+        when(iBirdRepository.findById(birdId)).thenReturn(Optional.of(bird));
         when(sightingMapper.convertToEntity(sightingDTO)).thenReturn(sighting);
+        when(iSightingRepository.save(any(Sighting.class))).thenReturn(sighting);
         when(sightingMapper.convertToDto(sighting)).thenReturn(sightingDTO);
-        var result = sightingService.createSighting(birdId, sightingDTO);
+        when(birdMapper.convertToDto(bird)).thenReturn(new BirdDTO()); // Mock bird DTO
 
+        // Call the method
+        SightingDTO result = sightingService.createSighting(birdId, sightingDTO);
+
+        // Verify repository calls
         verify(iBirdRepository).findById(birdId);
         verify(sightingMapper).convertToEntity(sightingDTO);
         verify(iSightingRepository).save(sighting);
         verify(sightingMapper).convertToDto(sighting);
+        verify(birdMapper).convertToDto(bird);
 
-        assertEquals(sightingDTO, result);
+        // Assert the result
+        assertNotNull(result);
+        assertEquals(sightingDTO.getLocation(), result.getLocation());
+        assertNotNull(result.getBird());
     }
 
     /**
@@ -260,42 +281,36 @@ public class SightingServiceTest {
      */
     @Test
     public void testFindAllSightings() {
-        // Mock data
-        Sighting sighting1 = new Sighting();
-        sighting1.setId(1L);
-        Sighting sighting2 = new Sighting();
-        sighting2.setId(2L);
+        List<Sighting> sightings = new ArrayList<>();
+        var sighting = new Sighting();
+        sighting.setId(1L);
+        sighting.setLocation("Test location");
+        sighting.setBird(new Bird());
+        sightings.add(sighting);
 
-        List<Sighting> sightingList = new ArrayList<>();
-        sightingList.add(sighting1);
-        sightingList.add(sighting2);
+        List<SightingDTO>  sightingsDTO = new ArrayList<>();
+        var sightingDTO = new SightingDTO();
+        sightingDTO.setId(1L);
+        sightingDTO.setLocation("Test Location");
+        sightingDTO.setBird(new BirdDTO());
+        sightingsDTO.add(sightingDTO);
 
-        SightingDTO sightingDTO1 = new SightingDTO();
-        sightingDTO1.setId(1L);
-        SightingDTO sightingDTO2 = new SightingDTO();
-        sightingDTO2.setId(2L);
+        // Mock repository call
+        when(iSightingRepository.findAll()).thenReturn(sightings);
+        when(sightingMapper.convertToDto(sighting)).thenReturn(sightingDTO);
+        when(birdMapper.convertToDto(any(Bird.class))).thenReturn(new BirdDTO());
 
-        List<SightingDTO> expectedDTOList = new ArrayList<>();
-        expectedDTOList.add(sightingDTO1);
-        expectedDTOList.add(sightingDTO2);
+        // Call the method
+        List<SightingDTO> result = sightingService.findAllSightings();
 
-        // Mock repository method
-        when(iSightingRepository.findAll()).thenReturn(sightingList);
+        // Verify repository calls and mapper conversions
+        verify(iSightingRepository).findAll();
+        verify(sightingMapper).convertToDto(sighting);
+        verify(birdMapper).convertToDto(any(Bird.class));
 
-        // Mock mapper method
-        when(sightingMapper.convertToDto(sightingList)).thenReturn(expectedDTOList);
-
-        // Call the service method
-        List<SightingDTO> actualDTOList = sightingService.findAllSightings();
-
-        // Verify the result
-        assertEquals(expectedDTOList, actualDTOList);
-
-        // Verify that the repository method was called once
-        verify(iSightingRepository, times(1)).findAll();
-
-        // Verify that the mapper method was called once
-        verify(sightingMapper, times(1)).convertToDto(sightingList);
+        // Assert the result
+        assertNotNull(result);
+        assertEquals(sightings.size(), result.size());
     }
 
     /**
