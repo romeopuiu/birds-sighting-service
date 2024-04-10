@@ -76,9 +76,13 @@ After starting the application open Postman:
 ![delete-bird](https://github.com/romeopuiu/birds-sighting-service/assets/49139565/af7617e6-5042-4de1-80f8-057027cba9c3)
 
 
+
+
+
 ![get-all-sightings](https://github.com/romeopuiu/birds-sighting-service/assets/49139565/989cc8c7-4a09-4d0f-9a23-59df80e7e208)
 
 
+![save-sigthing](https://github.com/romeopuiu/birds-sighting-service/assets/49139565/1e40da0f-5271-4e77-be27-29da29dfc8da)
 
 
 ![update-bird](https://github.com/romeopuiu/birds-sighting-service/assets/49139565/af4c6dfd-c677-4b1e-ab09-db0f0b64516d)
