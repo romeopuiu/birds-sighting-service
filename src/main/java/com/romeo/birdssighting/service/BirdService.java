@@ -45,9 +45,6 @@ public class BirdService {
         // Convert BirdDTO to Bird entity
         var bird = birdMapper.convertToEntity(birdDTO);
 
-        // Save Bird entity
-        bird = iBirdRepository.save(bird);
-
         // Convert and save Sightings
         var sightingDTOS = birdDTO.getSightings();
         if (sightingDTOS != null && !sightingDTOS.isEmpty()) {
@@ -60,6 +57,7 @@ public class BirdService {
             iSightingRepository.saveAll(sightings);
             // Update the bird with the saved sightings
             bird.setSightings(sightings);
+            bird = iBirdRepository.save(bird);
         }
 
         return birdMapper.convertToDto(bird);
@@ -106,6 +104,10 @@ public class BirdService {
      */
     public BirdDTO findBirdByName(String name) {
         var bird = iBirdRepository.findByName(name);
+     //   List<Sighting> sightings = iSightingRepository.findByBirdId(bird.getId());
+        //bird.setSightings(sightings);
+      //  iBirdRepository.save(bird);
+       // List<SightingDTO> sightingsDtos  = (List<SightingDTO>) sightingMapper.convertToDto(sightings);
 
         if (bird == null) {
             throw new ResourceNotFoundException("Bird not found with name: " + name);

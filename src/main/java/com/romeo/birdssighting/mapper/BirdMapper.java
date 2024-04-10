@@ -1,9 +1,14 @@
 package com.romeo.birdssighting.mapper;
 
 import com.romeo.birdssighting.domain.Bird;
+import com.romeo.birdssighting.domain.Sighting;
 import com.romeo.birdssighting.dto.BirdDTO;
+import com.romeo.birdssighting.dto.SightingDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  *  This class serves as a mapper between Bird entity objects and BirdDTO
@@ -11,7 +16,10 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
+@RequiredArgsConstructor
 public class BirdMapper extends BaseMapper<Bird, BirdDTO>{
+
+    private final SightingMapper sightingMapper;
 
     // Method to convert a BirdDTO to a Bird entity
     @Override
@@ -21,6 +29,12 @@ public class BirdMapper extends BaseMapper<Bird, BirdDTO>{
         if (dto != null) {
             BeanUtils.copyProperties(dto, bird);
         }
+        // Convert and set sightings if available
+        if (dto != null && dto.getSightings() != null) {
+            List<Sighting> sightings = (List<Sighting>) sightingMapper.convertToEntity(dto.getSightings());
+            bird.setSightings(sightings);
+        }
+
 
         return bird;
     }
@@ -31,6 +45,11 @@ public class BirdMapper extends BaseMapper<Bird, BirdDTO>{
         // Copies properties from entity to DTO using Spring's BeanUtils
         if (entity != null) {
             BeanUtils.copyProperties(entity, birdDTO);
+        }
+
+        if (entity != null && entity.getSightings() != null) {
+            List<SightingDTO> sightings = (List<SightingDTO>) sightingMapper.convertToDto(entity.getSightings());
+            birdDTO.setSightings(sightings);
         }
 
         return birdDTO;
