@@ -58,6 +58,11 @@ at line :  SPRING_DATASOURCE_PASSWORD: YOUR_DATABASE_PASSWORD
 <h5>Testing Spring Boot birds-sighting-service application  using Postman Tool:</h5>
 After starting the application open Postman:
 
+
+![save-bird](https://github.com/romeopuiu/birds-sighting-service/assets/49139565/fea30c30-0b85-4363-8522-517eea6e742d)
+
+
+
 ![get_all_birds](https://github.com/romeopuiu/birds-sighting-service/assets/49139565/d58a5b0b-d2c4-43a0-b46e-a7a6c60eeee7)
 
 
