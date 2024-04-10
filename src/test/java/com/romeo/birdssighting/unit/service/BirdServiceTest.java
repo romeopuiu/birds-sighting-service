@@ -49,7 +49,6 @@ public class BirdServiceTest {
     @InjectMocks
     private BirdService birdService;
 
-
     /**
      * This method is used for testing get all birds
      */
@@ -99,45 +98,8 @@ public class BirdServiceTest {
         // Verify that the method returns the expected list of BirdDTO objects
         assertEquals(1, actualBirdDTOs.size());
         assertEquals(birdDto, actualBirdDTOs.get(0));
-
-     /*   var bird = new Bird();
-        bird.setId(1L);
-        bird.setName("Test 1");
-        bird.setColor("Red");
-        bird.setHeight(1);
-        bird.setWeight(2);
-
-        // Create a list with one element
-        List<Bird> birds = Collections.singletonList(bird);
-        List<Sighting> sightings = new ArrayList<>();
-        List<SightingDTO> sightingDTOS = new ArrayList<>();
-        SightingDTO sightingDTO = new SightingDTO();
-        sightingDTO.setId(1L);
-        sightingDTOS.add(sightingDTO);
-        Sighting sighting = new Sighting();
-        sighting.setLocation("London");
-        sighting.setId(1L);
-        sightings.add(sighting);
-
-        var birdDto = new BirdDTO();
-        birdDto.setId(1L);
-        birdDto.setName("Test");
-        birdDto.setSightings(sightingDTOS);
-
-        when(iBirdRepository.findAll()).thenReturn(birds);
-        when(iSightingRepository.findByBird(bird)).thenReturn(sightings);
-        when(birdMapper.convertToDto(birds)).thenReturn(Collections.singletonList(birdDto));
-        when(sightingMapper.convertToDto(sightings)).thenReturn(sightingDTOS);
-
-        List<BirdDTO> actualBirdDTOs = birdService.getAllBirds();
-
-        verify(iBirdRepository, times(1)).findAll();
-        verify(birdMapper, times(1)).convertToDto(birds);
-        // Verify that the method returns the expected list of BirdDTO objects
-        assertEquals(1, actualBirdDTOs.size());
-        assertEquals(birdDto, actualBirdDTOs.get(0));*/
-
     }
+
     /**
      * This method is used to testing when a bird is saved
      */
