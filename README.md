@@ -66,4 +66,9 @@ After starting the application open Postman:
 ![get_all_birds](https://github.com/romeopuiu/birds-sighting-service/assets/49139565/d58a5b0b-d2c4-43a0-b46e-a7a6c60eeee7)
 
 
+![bird-by-color](https://github.com/romeopuiu/birds-sighting-service/assets/49139565/1838854f-6de6-4363-940b-8dfa9af0cf12)
+
+
+
+
 
