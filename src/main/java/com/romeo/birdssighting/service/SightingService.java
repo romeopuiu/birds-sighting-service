@@ -4,6 +4,7 @@ package com.romeo.birdssighting.service;
 import com.romeo.birdssighting.domain.Sighting;
 import com.romeo.birdssighting.dto.SightingDTO;
 import com.romeo.birdssighting.exception.ResourceNotFoundException;
+import com.romeo.birdssighting.mapper.BirdMapper;
 import com.romeo.birdssighting.mapper.SightingMapper;
 import com.romeo.birdssighting.repository.IBirdRepository;
 import com.romeo.birdssighting.repository.ISightingRepository;
@@ -36,6 +37,7 @@ public class SightingService {
     private final SightingMapper sightingMapper;
     // Dependency on IBirdRepository for database operations
     private final IBirdRepository iBirdRepository;
+    private final BirdMapper birdMapper;
 
     /**
      * This method is used to save a sighting
@@ -104,7 +106,15 @@ public class SightingService {
     public List<SightingDTO> findAllSightings() {
         List<Sighting> sightings = iSightingRepository.findAll();
 
-        return new ArrayList<>(sightingMapper.convertToDto(sightings));
+        List<SightingDTO> sightingDTOs = new ArrayList<>();
+        for (Sighting sighting : sightings) {
+            var sightingDTO = sightingMapper.convertToDto(sighting);
+            var birdDTO = birdMapper.convertToDto(sighting.getBird());
+            sightingDTO.setBird(birdDTO);
+            sightingDTOs.add(sightingDTO);
+        }
+
+        return sightingDTOs;
     }
 
     /**
