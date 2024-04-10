@@ -62,10 +62,9 @@ public class SightingController {
     @PutMapping("/sightings/{id}")
     public ResponseEntity<SightingDTO> updateSighting(@PathVariable("id") Long id,
                                                       @RequestBody SightingDTO sightingDTO) {
-        log.info("REST request to update sightingDTO: {}", sightingDTO);
+        log.info("REST request to update a sightingDTO: {}", sightingDTO);
         return ResponseEntity.ok(sightingService.updateSighting(id, sightingDTO));
     }
-
 
     /**
      * This method is used for get a single Sighting by Id
@@ -75,7 +74,6 @@ public class SightingController {
         log.info("REST request to get sighting by id : {}", id);
         return  ResponseEntity.ok(sightingService.findSighting(id));
     }
-
 
     /**
      * This method is used for get all sightings by location

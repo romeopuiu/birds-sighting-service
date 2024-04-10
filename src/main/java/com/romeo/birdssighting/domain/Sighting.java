@@ -41,5 +41,4 @@ public class Sighting {
     @JsonFormat(pattern = "YYYY-MM-dd HH:mm")
     @Column(name = "date_time")
     private LocalDateTime dateTime;
-
 }

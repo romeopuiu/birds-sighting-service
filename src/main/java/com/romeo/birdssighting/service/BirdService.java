@@ -74,6 +74,13 @@ public class BirdService {
         bird.setColor(birdDTO.getColor());
         bird.setHeight(birdDTO.getHeight());
         bird.setWeight(birdDTO.getWeight());
+        List<Sighting> sightings = (List<Sighting>) sightingMapper.convertToEntity(birdDTO.getSightings());
+        sightings.forEach(sighting -> {
+            // Set the associated bird for each sighting
+            sighting.setBird(bird);
+        });
+        iSightingRepository.saveAll(sightings);
+        bird.setSightings(sightings);
         iBirdRepository.save(bird);
 
         return birdMapper.convertToDto(bird);

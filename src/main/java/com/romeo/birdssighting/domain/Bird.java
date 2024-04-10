@@ -41,5 +41,4 @@ public class Bird {
 
     @Column(name = "height")
     private int height;
-
 }

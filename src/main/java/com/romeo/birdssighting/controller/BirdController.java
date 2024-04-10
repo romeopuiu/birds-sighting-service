@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import java.util.List;
 
 /**
- * This Java class represents a REST controller for managing
+ * This class represents a REST controller for managing
  * bird-related operations within an API.
  * This class serves as a controller component responsible for
  * handling HTTP requests related to bird resources
