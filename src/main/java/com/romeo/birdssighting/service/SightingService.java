@@ -47,12 +47,18 @@ public class SightingService {
         // Retrieve the Bird entity from the database
         var bird = iBirdRepository.findById(birdId)
                 .orElseThrow(() -> new EntityNotFoundException("Bird with birdId not found" + birdId));
-
+        // Convert SightingDTO to Sighting entity
         var sighting = sightingMapper.convertToEntity(sightingDTO);
+        // Set the associated Bird for the Sighting
         sighting.setBird(bird);
-        iSightingRepository.save(sighting);
+        // Save the Sighting entity
+        sighting = iSightingRepository.save(sighting);
+        // Convert the saved Sighting entity back to SightingDTO
+        var savedSightingDTO = sightingMapper.convertToDto(sighting);
+        // Set the BirdDTO in the SightingDTO
+        savedSightingDTO.setBird(birdMapper.convertToDto(bird));
 
-        return sightingMapper.convertToDto(sighting);
+        return savedSightingDTO;
     }
 
     /**
@@ -106,6 +112,12 @@ public class SightingService {
     public List<SightingDTO> findAllSightings() {
         List<Sighting> sightings = iSightingRepository.findAll();
 
+        List<SightingDTO> sightingDTOs = getAllSightings(sightings);
+
+        return getAllSightings(sightings);
+    }
+
+    private List<SightingDTO> getAllSightings(List<Sighting> sightings) {
         List<SightingDTO> sightingDTOs = new ArrayList<>();
         for (Sighting sighting : sightings) {
             var sightingDTO = sightingMapper.convertToDto(sighting);
@@ -113,7 +125,6 @@ public class SightingService {
             sightingDTO.setBird(birdDTO);
             sightingDTOs.add(sightingDTO);
         }
-
         return sightingDTOs;
     }
 
