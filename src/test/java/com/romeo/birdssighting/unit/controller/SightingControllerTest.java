@@ -21,7 +21,10 @@ import java.util.List;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.reset;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -96,7 +99,7 @@ public class SightingControllerTest {
 
         given(sightingService.updateSighting(id, sightingDTO)).willReturn(sightingDTO);
         // Perform the PUT request and verify the response
-        mockMvc.perform(put("/api/sightings/{id}", id) // Use the correct path variable name in the URL
+        mockMvc.perform(put("/api/sighting/{id}", id) // Use the correct path variable name in the URL
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(JsonUtil.toJson(sightingDTO)))
                 .andExpect(status().isOk());
