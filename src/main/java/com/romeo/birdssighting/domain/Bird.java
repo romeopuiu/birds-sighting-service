@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.GenerationType;
+import javax.persistence.CascadeType;
 import javax.persistence.OneToMany;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class Bird {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "bird")
+    @OneToMany(mappedBy = "bird", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sighting> sightings;
 
     @Column(name = "color")
