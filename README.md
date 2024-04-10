@@ -89,3 +89,8 @@ After starting the application open Postman:
 
 
 
+![update-sigting](https://github.com/romeopuiu/birds-sighting-service/assets/49139565/8cf803dc-8164-4056-a6aa-50300016cf3c)
+
+
+
+
