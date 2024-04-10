@@ -111,11 +111,6 @@ public class BirdService {
      */
     public BirdDTO findBirdByName(String name) {
         var bird = iBirdRepository.findByName(name);
-     //   List<Sighting> sightings = iSightingRepository.findByBirdId(bird.getId());
-        //bird.setSightings(sightings);
-      //  iBirdRepository.save(bird);
-       // List<SightingDTO> sightingsDtos  = (List<SightingDTO>) sightingMapper.convertToDto(sightings);
-
         if (bird == null) {
             throw new ResourceNotFoundException("Bird not found with name: " + name);
         }
