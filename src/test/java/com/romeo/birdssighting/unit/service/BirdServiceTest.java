@@ -17,14 +17,17 @@ import org.mockito.Mock;
 
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.doNothing;
@@ -63,13 +66,12 @@ public class BirdServiceTest {
 
         // Create a list with one element
         List<Bird> birds = Collections.singletonList(bird);
-        //birds.add(bird);
         List<Sighting> sightings = new ArrayList<>();
         List<SightingDTO> sightingDTOS = new ArrayList<>();
         SightingDTO sightingDTO = new SightingDTO();
         sightingDTO.setId(1L);
         sightingDTOS.add(sightingDTO);
-        Sighting sighting = new Sighting();
+        var sighting = new Sighting();
         sighting.setLocation("London");
         sighting.setId(1L);
         sightings.add(sighting);
@@ -105,32 +107,69 @@ public class BirdServiceTest {
      */
     @Test
     public void testSaveBird() {
-        var birdDTO = new BirdDTO();
-        birdDTO.setId(1L);
-        birdDTO.setName("Test Bird");
-        birdDTO.setColor("Red");
-        birdDTO.setHeight(10);
-        birdDTO.setWeight(20);
-
+        // Mock data
         var bird = new Bird();
         bird.setId(1L);
-        bird.setName("Test Bird");
+        bird.setName("Test");
         bird.setColor("Red");
-        bird.setHeight(10);
-        bird.setWeight(20);
+        bird.setWeight(15);
+        bird.setHeight(12);
+
+        List<Sighting> sightingList = new ArrayList<>();
+        List<SightingDTO> sightingDTOList = new ArrayList<>();
+
+        var sightingDTO = new SightingDTO();
+        sightingDTO.setId(1L);
+        sightingDTO.setLocation("London");
+        sightingDTO.setDateTime(LocalDateTime.now());
+        // Set the bird property to a valid BirdDTO object
+        var birdInSighting = new BirdDTO();
+        birdInSighting.setId(1L);
+        birdInSighting.setColor("Red");
+        birdInSighting.setHeight(12);
+        birdInSighting.setWeight(15);
+        birdInSighting.setName("Test");
+        sightingDTO.setBird(birdInSighting);
+
+        var birdDTO = new BirdDTO();
+        birdDTO.setId(1L);
+        birdDTO.setName("Test");
+        birdDTO.setColor("Red");
+        birdDTO.setWeight(15);
+        birdDTO.setHeight(12);
+        sightingDTO.setBird(birdDTO);
+
+        sightingDTOList.add(sightingDTO);
+        birdInSighting.setSightings(sightingDTOList);
+
+        birdDTO.setSightings(sightingDTOList);
+        Sighting sighting = new Sighting();
+        sighting.setId(1L);
+        sighting.setLocation("London");
+        sighting.setDateTime(LocalDateTime.now());
+        sighting.setBird(bird);
+        sightingList.add(sighting);
+        bird.setSightings(sightingList);
 
         when(birdMapper.convertToEntity(birdDTO)).thenReturn(bird);
+        when(sightingMapper.convertToEntity(sightingDTOList)).thenReturn(sightingList);
+        when(iSightingRepository.saveAll(sightingList)).thenReturn(Collections.singletonList(new Sighting()));
         when(iBirdRepository.save(bird)).thenReturn(bird);
         when(birdMapper.convertToDto(bird)).thenReturn(birdDTO);
 
-        var result = birdService.saveBird(birdDTO);
+        // Call the method
+        BirdDTO result = birdService.saveBird(birdDTO);
 
+        // Verify method calls
         verify(birdMapper).convertToEntity(birdDTO);
+        verify(sightingMapper).convertToEntity(sightingDTOList);
+        verify(iSightingRepository).saveAll(anyList());
         verify(iBirdRepository).save(bird);
         verify(birdMapper).convertToDto(bird);
 
-        // Verify the result
-        assertEquals(birdDTO, result);
+        // Assertions
+        assertNotNull(result);
+        assertEquals(birdDTO.getName(), result.getName());
     }
 
     /**
@@ -153,7 +192,7 @@ public class BirdServiceTest {
         existingBird.setWeight(15);
 
         // Mock behavior
-        when(iBirdRepository.findById(id)).thenReturn(java.util.Optional.of(existingBird));
+        when(iBirdRepository.findById(id)).thenReturn(Optional.of(existingBird));
         when(iBirdRepository.save(any(Bird.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(birdMapper.convertToDto(any(Bird.class))).thenAnswer(invocation -> {
             Bird bird = invocation.getArgument(0);

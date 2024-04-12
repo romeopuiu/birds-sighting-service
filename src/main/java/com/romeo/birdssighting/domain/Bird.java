@@ -2,6 +2,7 @@ package com.romeo.birdssighting.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Entity;
@@ -31,6 +32,7 @@ public class Bird {
     @Column(name = "name")
     private String name;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "bird", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sighting> sightings;
 

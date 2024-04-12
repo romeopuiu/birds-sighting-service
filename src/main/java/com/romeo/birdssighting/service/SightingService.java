@@ -113,9 +113,6 @@ public class SightingService {
      */
     public List<SightingDTO> findAllSightings() {
         List<Sighting> sightings = iSightingRepository.findAll();
-
-        List<SightingDTO> sightingDTOs = getAllSightings(sightings);
-
         return getAllSightings(sightings);
     }
 
