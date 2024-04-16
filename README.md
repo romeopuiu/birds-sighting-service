@@ -21,7 +21,7 @@ Spring Boot birds-sighting-service:
 
 2. Build the app:
    mvn clean install
-3. Run Spring Boot birds-sighting-service
+3. Run Spring Boot birds-sighting-service:
    mvn spring-boot:run
 
 
