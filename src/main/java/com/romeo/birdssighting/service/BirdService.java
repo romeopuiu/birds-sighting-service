@@ -119,7 +119,7 @@ public class BirdService {
     }
 
     /**
-     * This method is used to returns a bird by name
+     * This method is used to returns a bird by color
      */
     public BirdDTO findBirdByColor(String color) {
         Bird bird = iBirdRepository.findByColor(color);
