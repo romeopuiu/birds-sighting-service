@@ -1,4 +1,4 @@
-package com.romeo.birdssighting.service;
+package com.romeo.birdssighting.services;
 
 
 import com.romeo.birdssighting.domain.Sighting;
@@ -6,14 +6,14 @@ import com.romeo.birdssighting.dto.SightingDTO;
 import com.romeo.birdssighting.exception.ResourceNotFoundException;
 import com.romeo.birdssighting.mapper.BirdMapper;
 import com.romeo.birdssighting.mapper.SightingMapper;
-import com.romeo.birdssighting.repository.IBirdRepository;
-import com.romeo.birdssighting.repository.ISightingRepository;
+import jakarta.persistence.EntityNotFoundException;
+import com.romeo.birdssighting.repositories.IBirdRepository;
+import com.romeo.birdssighting.repositories.ISightingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,9 +54,9 @@ public class SightingService {
         // Save the Sighting entity
         sighting = iSightingRepository.save(sighting);
         // Convert the saved Sighting entity back to SightingDTO
-        var savedSightingDTO = sightingMapper.convertToDto(sighting);
+        var savedSightingDTO = sightingMapper.convertToDTO(sighting);
         // Set the BirdDTO in the SightingDTO
-        savedSightingDTO.setBird(birdMapper.convertToDto(bird));
+        savedSightingDTO.setBird(birdMapper.convertToDTO(bird));
 
         return savedSightingDTO;
     }
@@ -67,14 +67,15 @@ public class SightingService {
     public SightingDTO updateSighting(Long id, SightingDTO sightingDTO) {
         log.info("Update a SightingDTO: {}", sightingDTO);
         var sighting = iSightingRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Sighting not exist with id :" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Sighting does not exist with id :" + id));
 
         sighting.setLocation(sightingDTO.getLocation());
         sighting.setDateTime(sightingDTO.getDateTime());
         iSightingRepository.save(sighting);
-        sightingDTO = sightingMapper.convertToDto(sighting);
-        var birdDTO = birdMapper.convertToDto(sighting.getBird());
+        sightingDTO = sightingMapper.convertToDTO(sighting);
+        var birdDTO = birdMapper.convertToDTO(sighting.getBird());
         sightingDTO.setBird(birdDTO);
+
         return sightingDTO;
     }
 
@@ -84,7 +85,7 @@ public class SightingService {
     public List<SightingDTO> findByLocation(String location) {
         log.info("Get all sightings by location: {}", location);
         var birds = iSightingRepository.findByLocation(location);
-        return new ArrayList<>(sightingMapper.convertToDto(birds));
+        return new ArrayList<>(sightingMapper.convertToDTO(birds));
     }
 
     /**
@@ -93,7 +94,7 @@ public class SightingService {
     public List<SightingDTO> findByDateTime(LocalDateTime dateTime) {
         log.info("Get all sightings by dateTime: {}", dateTime);
         var birds = iSightingRepository.findByDateTime(dateTime);
-        return new ArrayList<>(sightingMapper.convertToDto(birds));
+        return new ArrayList<>(sightingMapper.convertToDTO(birds));
     }
 
     /**
@@ -101,29 +102,32 @@ public class SightingService {
      */
     public List<SightingDTO> findAllSightingsByBirdId(Long birdId) {
         if (!iBirdRepository.existsById(birdId)) {
-           throw new ResourceNotFoundException("Bird not exist with id: " + birdId);
+           throw new ResourceNotFoundException("Bird does not exist with id: " + birdId);
         }
 
         var sightings = iSightingRepository.findByBirdId(birdId);
-        return new ArrayList<>(sightingMapper.convertToDto(sightings));
+        return new ArrayList<>(sightingMapper.convertToDTO(sightings));
     }
 
     /**
      * This method is used to returns all sightings.
      */
     public List<SightingDTO> findAllSightings() {
-        List<Sighting> sightings = iSightingRepository.findAll();
+       var sightings = iSightingRepository.findAll();
+
         return getAllSightings(sightings);
     }
 
     private List<SightingDTO> getAllSightings(List<Sighting> sightings) {
         List<SightingDTO> sightingDTOs = new ArrayList<>();
+
         for (Sighting sighting : sightings) {
-            var sightingDTO = sightingMapper.convertToDto(sighting);
-            var birdDTO = birdMapper.convertToDto(sighting.getBird());
+            var sightingDTO = sightingMapper.convertToDTO(sighting);
+            var birdDTO = birdMapper.convertToDTO(sighting.getBird());
             sightingDTO.setBird(birdDTO);
             sightingDTOs.add(sightingDTO);
         }
+
         return sightingDTOs;
     }
 
@@ -132,9 +136,9 @@ public class SightingService {
      */
     public SightingDTO findSighting(Long id) {
         var sighting = iSightingRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Sighting not exist with id:" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Sighting does not exist with id:" + id));
 
-        return sightingMapper.convertToDto(sighting);
+        return sightingMapper.convertToDTO(sighting);
     }
 
     /**

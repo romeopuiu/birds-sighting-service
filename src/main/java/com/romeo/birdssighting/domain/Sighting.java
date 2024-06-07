@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.ManyToOne;
-import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
-import javax.persistence.Column;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import java.time.LocalDateTime;
 
 
@@ -21,10 +21,10 @@ import java.time.LocalDateTime;
  *
  This class represents a data model for a sighting entity in a database
  */
-@Entity
-@Table(name = "sighting")
 @Getter
 @Setter
+@Entity
+@Table(name = "sighting")
 public class Sighting {
 
     @Id

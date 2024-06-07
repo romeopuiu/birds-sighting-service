@@ -15,7 +15,7 @@ public abstract class BaseMapper<E, D> {
     public abstract E convertToEntity(D dto, Object... args);
 
     // Method to convert an entity to a DTO (Data Transfer Object)
-    public abstract D convertToDto(E entity, Object... args);
+    public abstract D convertToDTO(E entity, Object... args);
 
     // Method to convert a collection of DTOs to a collection of entities
     public Collection<E> convertToEntity(Collection<D> dto, Object... args) {
@@ -24,8 +24,8 @@ public abstract class BaseMapper<E, D> {
     }
 
     // Method to convert a collection of DTOs to a collection of entities
-    public Collection<D> convertToDto(Collection<E> entity, Object... args) {
+    public Collection<D> convertToDTO(Collection<E> entity, Object... args) {
         // Utilizes Java Streams to map each entity to its corresponding DTO
-        return entity.stream().map(e -> convertToDto(e, args)).collect(Collectors.toList());
+        return entity.stream().map(e -> convertToDTO(e, args)).collect(Collectors.toList());
     }
 }

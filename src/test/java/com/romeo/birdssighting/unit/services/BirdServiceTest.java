@@ -1,4 +1,4 @@
-package com.romeo.birdssighting.unit.service;
+package com.romeo.birdssighting.unit.services;
 
 import com.romeo.birdssighting.domain.Bird;
 import com.romeo.birdssighting.domain.Sighting;
@@ -7,9 +7,9 @@ import com.romeo.birdssighting.dto.SightingDTO;
 import com.romeo.birdssighting.exception.ResourceNotFoundException;
 import com.romeo.birdssighting.mapper.BirdMapper;
 import com.romeo.birdssighting.mapper.SightingMapper;
-import com.romeo.birdssighting.repository.IBirdRepository;
-import com.romeo.birdssighting.repository.ISightingRepository;
-import com.romeo.birdssighting.service.BirdService;
+import com.romeo.birdssighting.repositories.IBirdRepository;
+import com.romeo.birdssighting.repositories.ISightingRepository;
+import com.romeo.birdssighting.services.BirdService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -84,8 +84,8 @@ public class BirdServiceTest {
         // Mock the behavior of iBirdRepository.findAll()
         when(iBirdRepository.findAll()).thenReturn(birds);
         when(iSightingRepository.findByBird(bird)).thenReturn(sightings);
-        when(birdMapper.convertToDto(bird)).thenReturn(birdDto);
-        when(sightingMapper.convertToDto(sightings)).thenReturn(sightingDTOS);
+        when(birdMapper.convertToDTO(bird)).thenReturn(birdDto);
+        when(sightingMapper.convertToDTO(sightings)).thenReturn(sightingDTOS);
 
         // Call the service method
         List<BirdDTO> actualBirdDTOs = birdService.getAllBirds();
@@ -94,8 +94,8 @@ public class BirdServiceTest {
         verify(iBirdRepository, times(1)).findAll();
         // Verify that the findByBird method was called with the correct bird object
         verify(iSightingRepository, times(1)).findByBird(bird);
-        verify(birdMapper, times(1)).convertToDto(bird);
-        verify(sightingMapper, times(1)).convertToDto(sightings);
+        verify(birdMapper, times(1)).convertToDTO(bird);
+        verify(sightingMapper, times(1)).convertToDTO(sightings);
 
         // Verify that the method returns the expected list of BirdDTO objects
         assertEquals(1, actualBirdDTOs.size());
@@ -155,7 +155,7 @@ public class BirdServiceTest {
         when(sightingMapper.convertToEntity(sightingDTOList)).thenReturn(sightingList);
         when(iSightingRepository.saveAll(sightingList)).thenReturn(Collections.singletonList(new Sighting()));
         when(iBirdRepository.save(bird)).thenReturn(bird);
-        when(birdMapper.convertToDto(bird)).thenReturn(birdDTO);
+        when(birdMapper.convertToDTO(bird)).thenReturn(birdDTO);
 
         // Call the method
         BirdDTO result = birdService.saveBird(birdDTO);
@@ -165,7 +165,7 @@ public class BirdServiceTest {
         verify(sightingMapper).convertToEntity(sightingDTOList);
         verify(iSightingRepository).saveAll(anyList());
         verify(iBirdRepository).save(bird);
-        verify(birdMapper).convertToDto(bird);
+        verify(birdMapper).convertToDTO(bird);
 
         // Assertions
         assertNotNull(result);
@@ -194,7 +194,7 @@ public class BirdServiceTest {
         // Mock behavior
         when(iBirdRepository.findById(id)).thenReturn(Optional.of(existingBird));
         when(iBirdRepository.save(any(Bird.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(birdMapper.convertToDto(any(Bird.class))).thenAnswer(invocation -> {
+        when(birdMapper.convertToDTO(any(Bird.class))).thenAnswer(invocation -> {
             Bird bird = invocation.getArgument(0);
             BirdDTO dto = new BirdDTO();
             dto.setName(bird.getName());
@@ -250,7 +250,7 @@ public class BirdServiceTest {
         var expectedBirdDTO = new BirdDTO();
         expectedBirdDTO.setId(bird.getId());
         expectedBirdDTO.setColor(bird.getColor());
-        when(birdMapper.convertToDto(bird)).thenReturn(expectedBirdDTO);
+        when(birdMapper.convertToDTO(bird)).thenReturn(expectedBirdDTO);
         // Call the method under test
         var result = birdService.findBirdByColor(color);
         // Verify that findByColor(color) is called once with the specified color
@@ -291,7 +291,7 @@ public class BirdServiceTest {
         BirdDTO expectedBirdDTO = new BirdDTO();
         expectedBirdDTO.setId(bird.getId());
         expectedBirdDTO.setName(bird.getName());
-        when(birdMapper.convertToDto(bird)).thenReturn(expectedBirdDTO);
+        when(birdMapper.convertToDTO(bird)).thenReturn(expectedBirdDTO);
 
         var result = birdService.findBirdByName(name);
         // Verify that findByName(name) is called once with the specified name

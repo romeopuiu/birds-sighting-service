@@ -1,4 +1,4 @@
-package com.romeo.birdssighting.repository;
+package com.romeo.birdssighting.repositories;
 
 import com.romeo.birdssighting.domain.Bird;
 import org.springframework.data.jpa.repository.JpaRepository;

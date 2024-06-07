@@ -1,8 +1,8 @@
-package com.romeo.birdssighting.controller;
+package com.romeo.birdssighting.controllers;
 
 
 import com.romeo.birdssighting.dto.SightingDTO;
-import com.romeo.birdssighting.service.SightingService;
+import com.romeo.birdssighting.services.SightingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;

@@ -1,4 +1,4 @@
-package com.romeo.birdssighting.unit.controller;
+package com.romeo.birdssighting.unit.controllers;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;

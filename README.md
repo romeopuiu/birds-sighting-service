@@ -8,11 +8,11 @@ Clone the repository:
 git clone https://github.com/romeopuiu/birds-sighting-service.git
 
 <b>Prerequisites:</b>
-* Spring Boot 2.7.0
-* Java 11
+* Spring Boot 3.3.0
+* Java 21
 * Maven
 * PostgreSQL Database
-* Lombok 1.18.6 to generate boilerplate code
+* Lombok to generate boilerplate code
 
 Spring Boot birds-sighting-service:
 

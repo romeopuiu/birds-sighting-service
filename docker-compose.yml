@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_DB: bird_sightings
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin112
+      POSTGRES_PASSWORD: admin1234
     ports:
       - "5432:5432"
 

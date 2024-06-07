@@ -9,10 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class SightingMapper extends BaseMapper<Sighting, SightingDTO> {
 
-
     @Override
     public Sighting convertToEntity(SightingDTO dto, Object... args) {
-        Sighting sighting = new Sighting();
+        var sighting = new Sighting();
 
         if (dto != null) {
             BeanUtils.copyProperties(dto, sighting);
@@ -21,8 +20,8 @@ public class SightingMapper extends BaseMapper<Sighting, SightingDTO> {
     }
 
     @Override
-    public SightingDTO convertToDto(Sighting entity, Object... args) {
-        SightingDTO sightingDTO = new SightingDTO();
+    public SightingDTO convertToDTO(Sighting entity, Object... args) {
+        var sightingDTO = new SightingDTO();
 
         if (entity != null) {
             BeanUtils.copyProperties(entity, sightingDTO);

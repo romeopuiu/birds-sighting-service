@@ -24,31 +24,30 @@ public class BirdMapper extends BaseMapper<Bird, BirdDTO>{
     // Method to convert a BirdDTO to a Bird entity
     @Override
     public Bird convertToEntity(BirdDTO dto, Object... args) {
-        Bird bird = new Bird();
+        var bird = new Bird();
         // Copies properties from DTO to entity using Spring's BeanUtils
         if (dto != null) {
             BeanUtils.copyProperties(dto, bird);
         }
         // Convert and set sightings if available
         if (dto != null && dto.getSightings() != null) {
-            List<Sighting> sightings = (List<Sighting>) sightingMapper.convertToEntity(dto.getSightings());
+            var sightings = (List<Sighting>) sightingMapper.convertToEntity(dto.getSightings());
             bird.setSightings(sightings);
         }
-
 
         return bird;
     }
     // Method to convert a Bird entity to a BirdDTO
     @Override
-    public BirdDTO convertToDto(Bird entity, Object... args) {
-        BirdDTO birdDTO = new BirdDTO();
+    public BirdDTO convertToDTO(Bird entity, Object... args) {
+        var birdDTO = new BirdDTO();
         // Copies properties from entity to DTO using Spring's BeanUtils
         if (entity != null) {
             BeanUtils.copyProperties(entity, birdDTO);
         }
 
         if (entity != null && entity.getSightings() != null) {
-            List<SightingDTO> sightings = (List<SightingDTO>) sightingMapper.convertToDto(entity.getSightings());
+            var sightings = (List<SightingDTO>) sightingMapper.convertToDTO(entity.getSightings());
             birdDTO.setSightings(sightings);
         }
 

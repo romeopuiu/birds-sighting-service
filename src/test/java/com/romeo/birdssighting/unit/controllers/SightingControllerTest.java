@@ -1,8 +1,8 @@
-package com.romeo.birdssighting.unit.controller;
+package com.romeo.birdssighting.unit.controllers;
 
-import com.romeo.birdssighting.controller.SightingController;
+import com.romeo.birdssighting.controllers.SightingController;
 import com.romeo.birdssighting.dto.SightingDTO;
-import com.romeo.birdssighting.service.SightingService;
+import com.romeo.birdssighting.services.SightingService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.internal.verification.VerificationModeFactory;

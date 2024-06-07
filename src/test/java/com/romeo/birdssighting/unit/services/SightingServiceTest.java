@@ -1,4 +1,4 @@
-package com.romeo.birdssighting.unit.service;
+package com.romeo.birdssighting.unit.services;
 
 import com.romeo.birdssighting.domain.Bird;
 import com.romeo.birdssighting.domain.Sighting;
@@ -7,9 +7,9 @@ import com.romeo.birdssighting.dto.SightingDTO;
 import com.romeo.birdssighting.exception.ResourceNotFoundException;
 import com.romeo.birdssighting.mapper.BirdMapper;
 import com.romeo.birdssighting.mapper.SightingMapper;
-import com.romeo.birdssighting.repository.IBirdRepository;
-import com.romeo.birdssighting.repository.ISightingRepository;
-import com.romeo.birdssighting.service.SightingService;
+import com.romeo.birdssighting.repositories.IBirdRepository;
+import com.romeo.birdssighting.repositories.ISightingRepository;
+import com.romeo.birdssighting.services.SightingService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,16 +75,16 @@ public class SightingServiceTest {
 
         when(iBirdRepository.existsById(birdId)).thenReturn(true);
         when(iSightingRepository.findByBirdId(birdId)).thenReturn(sightings);
-        when(sightingMapper.convertToDto(sightings)).thenReturn(sightingDTOS);
+        when(sightingMapper.convertToDTO(sightings)).thenReturn(sightingDTOS);
 
         var result = sightingService.findAllSightingsByBirdId(birdId);
 
         assertEquals(1, result.size());
         verify(iBirdRepository).existsById(birdId);
 
-        verify(sightingMapper).convertToDto(sightings);
+        verify(sightingMapper).convertToDTO(sightings);
         verify(iSightingRepository).findByBirdId(birdId);
-        verify(sightingMapper, times(1)).convertToDto(sightings);
+        verify(sightingMapper, times(1)).convertToDTO(sightings);
 
     }
 
@@ -117,12 +117,12 @@ public class SightingServiceTest {
         sighting.setId(sightingId);
 
         when(iSightingRepository.findById(sightingId)).thenReturn(Optional.of(sighting));
-        when(sightingMapper.convertToDto(sighting)).thenReturn(sightingDTO);
+        when(sightingMapper.convertToDTO(sighting)).thenReturn(sightingDTO);
 
         var result = sightingService.findSighting(sightingId);
 
         verify(iSightingRepository).findById(sightingId);
-        verify(sightingMapper).convertToDto(sighting);
+        verify(sightingMapper).convertToDTO(sighting);
         assertEquals(sightingId, result.getId());
     }
 
@@ -160,12 +160,12 @@ public class SightingServiceTest {
         sightings.add(sighting);
 
         when(iSightingRepository.findByLocation(location)).thenReturn(sightings);
-        when(sightingMapper.convertToDto(sightings)).thenReturn(sightingDTOS);
+        when(sightingMapper.convertToDTO(sightings)).thenReturn(sightingDTOS);
 
         var result = sightingService.findByLocation(location);
 
         verify(iSightingRepository).findByLocation(location);
-        verify(sightingMapper, times(1)).convertToDto(sightings);
+        verify(sightingMapper, times(1)).convertToDTO(sightings);
         assertEquals(1, result.size());
     }
 
@@ -187,12 +187,12 @@ public class SightingServiceTest {
         sightings.add(sighting);
 
         when(iSightingRepository.findByDateTime(dateTime)).thenReturn(sightings);
-        when(sightingMapper.convertToDto(sightings)).thenReturn(sightingDTOS);
+        when(sightingMapper.convertToDTO(sightings)).thenReturn(sightingDTOS);
 
         List<SightingDTO> result = sightingService.findByDateTime(dateTime);
 
         verify(iSightingRepository).findByDateTime(dateTime);
-        verify(sightingMapper, times(1)).convertToDto(sightings);
+        verify(sightingMapper, times(1)).convertToDTO(sightings);
         assertEquals(1, result.size());
     }
     /**
@@ -244,8 +244,8 @@ public class SightingServiceTest {
         when(iBirdRepository.findById(birdId)).thenReturn(Optional.of(bird));
         when(sightingMapper.convertToEntity(sightingDTO)).thenReturn(sighting);
         when(iSightingRepository.save(any(Sighting.class))).thenReturn(sighting);
-        when(sightingMapper.convertToDto(sighting)).thenReturn(sightingDTO);
-        when(birdMapper.convertToDto(bird)).thenReturn(new BirdDTO()); // Mock bird DTO
+        when(sightingMapper.convertToDTO(sighting)).thenReturn(sightingDTO);
+        when(birdMapper.convertToDTO(bird)).thenReturn(new BirdDTO()); // Mock bird DTO
 
         // Call the method
         SightingDTO result = sightingService.createSighting(birdId, sightingDTO);
@@ -254,8 +254,8 @@ public class SightingServiceTest {
         verify(iBirdRepository).findById(birdId);
         verify(sightingMapper).convertToEntity(sightingDTO);
         verify(iSightingRepository).save(sighting);
-        verify(sightingMapper).convertToDto(sighting);
-        verify(birdMapper).convertToDto(bird);
+        verify(sightingMapper).convertToDTO(sighting);
+        verify(birdMapper).convertToDTO(bird);
 
         // Assert the result
         assertNotNull(result);
@@ -297,16 +297,16 @@ public class SightingServiceTest {
 
         // Mock repository call
         when(iSightingRepository.findAll()).thenReturn(sightings);
-        when(sightingMapper.convertToDto(sighting)).thenReturn(sightingDTO);
-        when(birdMapper.convertToDto(any(Bird.class))).thenReturn(new BirdDTO());
+        when(sightingMapper.convertToDTO(sighting)).thenReturn(sightingDTO);
+        when(birdMapper.convertToDTO(any(Bird.class))).thenReturn(new BirdDTO());
 
         // Call the method
         List<SightingDTO> result = sightingService.findAllSightings();
 
         // Verify repository calls and mapper conversions
         verify(iSightingRepository).findAll();
-        verify(sightingMapper).convertToDto(sighting);
-        verify(birdMapper).convertToDto(any(Bird.class));
+        verify(sightingMapper).convertToDTO(sighting);
+        verify(birdMapper).convertToDTO(any(Bird.class));
 
         // Assert the result
         assertNotNull(result);
@@ -331,14 +331,14 @@ public class SightingServiceTest {
         // Mock behavior to simulate existing sighting
         when(iSightingRepository.findById(id)).thenReturn(Optional.of(sighting));
         when(iSightingRepository.save(any(Sighting.class))).thenReturn(sighting);
-        when(sightingMapper.convertToDto(any(Sighting.class))).thenReturn(sightingDTO);
+        when(sightingMapper.convertToDTO(any(Sighting.class))).thenReturn(sightingDTO);
 
         // Call the method under test
         var result = sightingService.updateSighting(id, sightingDTO);
 
         verify(iSightingRepository, times(1)).findById(id);
         verify(iSightingRepository, times(1)).save(any(Sighting.class));
-        verify(sightingMapper, times(1)).convertToDto(any(Sighting.class));
+        verify(sightingMapper, times(1)).convertToDTO(any(Sighting.class));
 
         assertEquals(sightingDTO.getLocation(), result.getLocation());
         assertEquals(sightingDTO.getDateTime(), result.getDateTime());

@@ -1,8 +1,8 @@
-package com.romeo.birdssighting.unit.repository;
+package com.romeo.birdssighting.unit.repositories;
 
 
 import com.romeo.birdssighting.domain.Bird;
-import com.romeo.birdssighting.repository.IBirdRepository;
+import com.romeo.birdssighting.repositories.IBirdRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

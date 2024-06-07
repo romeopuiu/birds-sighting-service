@@ -1,8 +1,8 @@
-package com.romeo.birdssighting.controller;
+package com.romeo.birdssighting.controllers;
 
 
 import com.romeo.birdssighting.dto.BirdDTO;
-import com.romeo.birdssighting.service.BirdService;
+import com.romeo.birdssighting.services.BirdService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.romeo.birdssighting.service;
+package com.romeo.birdssighting.services;
 
 
 import com.romeo.birdssighting.domain.Bird;
@@ -8,8 +8,8 @@ import com.romeo.birdssighting.dto.SightingDTO;
 import com.romeo.birdssighting.exception.ResourceNotFoundException;
 import com.romeo.birdssighting.mapper.BirdMapper;
 import com.romeo.birdssighting.mapper.SightingMapper;
-import com.romeo.birdssighting.repository.IBirdRepository;
-import com.romeo.birdssighting.repository.ISightingRepository;
+import com.romeo.birdssighting.repositories.IBirdRepository;
+import com.romeo.birdssighting.repositories.ISightingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +49,7 @@ public class BirdService {
         var sightingDTOS = birdDTO.getSightings();
         if (sightingDTOS != null && !sightingDTOS.isEmpty()) {
             List<Sighting> sightings = (List<Sighting>) sightingMapper.convertToEntity(sightingDTOS);
-            Bird finalBird = bird;
+            var finalBird = bird;
             sightings.forEach(sighting -> {
                 // Set the associated bird for each sighting
                 sighting.setBird(finalBird);
@@ -60,7 +60,7 @@ public class BirdService {
             bird = iBirdRepository.save(bird);
         }
 
-        return birdMapper.convertToDto(bird);
+        return birdMapper.convertToDTO(bird);
     }
 
     /**
@@ -83,7 +83,7 @@ public class BirdService {
         bird.setSightings(sightings);
         iBirdRepository.save(bird);
 
-        return birdMapper.convertToDto(bird);
+        return birdMapper.convertToDTO(bird);
     }
 
     /**
@@ -91,14 +91,14 @@ public class BirdService {
      */
     public List<BirdDTO> getAllBirds() {
         // Retrieve all Bird entities from the repository
-        List<Bird> birds = iBirdRepository.findAll();
+        var birds = iBirdRepository.findAll();
 
         // Convert Bird entities to BirdDTO objects
         List<BirdDTO> birdDTOs = new ArrayList<>();
         for (Bird bird : birds) {
-            BirdDTO birdDTO = birdMapper.convertToDto(bird);
+            var birdDTO = birdMapper.convertToDTO(bird);
             List<Sighting> sightings = iSightingRepository.findByBird(bird);
-            List<SightingDTO> sightingDTOs = (List<SightingDTO>) sightingMapper.convertToDto(sightings);
+            List<SightingDTO> sightingDTOs = (List<SightingDTO>) sightingMapper.convertToDTO(sightings);
             birdDTO.setSightings(sightingDTOs);
             birdDTOs.add(birdDTO);
         }
@@ -115,18 +115,18 @@ public class BirdService {
             throw new ResourceNotFoundException("Bird not found with name: " + name);
         }
 
-        return birdMapper.convertToDto(bird);
+        return birdMapper.convertToDTO(bird);
     }
 
     /**
      * This method is used to returns a bird by color
      */
     public BirdDTO findBirdByColor(String color) {
-        Bird bird = iBirdRepository.findByColor(color);
+        var bird = iBirdRepository.findByColor(color);
         if (bird == null) {
             throw new ResourceNotFoundException("Bird not found with color: " + color);
         }
-        return birdMapper.convertToDto(bird);
+        return birdMapper.convertToDTO(bird);
 
     }
 
@@ -137,7 +137,7 @@ public class BirdService {
         if (iBirdRepository.existsById(id)) {
             iBirdRepository.deleteById(id);
         } else {
-            throw new ResourceNotFoundException("Bird not exist with id :" + id);
+            throw new ResourceNotFoundException("Bird does not exist with id: " + id);
         }
     }
 }
